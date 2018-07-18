@@ -1,0 +1,34 @@
+---
+ 
+- hosts: all
+  sudo: yes
+  tasks:
+
+# Installs Docker on Ubuntu
+#
+  - block: 
+    - name: Installing docker prereqs on Ubuntu
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - software-properties-common 
+         
+    - name: Add Docker GPG key
+      apt_key: url=https://download.docker.com/linux/ubuntu/gpg
+
+    - name: Adding docker repo
+      apt_repository: 
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+
+    - name: Update all packages
+      apt:
+        upgrade: dist  
+
+    - name: Installing docker on Ubuntu
+      package: 
+        name:
+          - docker-ce
+    when: ansible_distribution == 'Ubuntu'

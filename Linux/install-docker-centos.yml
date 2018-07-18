@@ -1,0 +1,33 @@
+---
+ 
+- hosts: all
+  sudo: yes
+  tasks:
+
+# Install/config Docker on Centos                                                        
+#
+  - block:
+    - name: Installing docker prereqs on CentOS
+      yum: 
+        name:
+          - yum-utils
+
+    - name: Adding Docker Repo
+      yum_repository:
+        name: docker-ce
+        description: Docker-CE YUM Repo
+        baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+        enabled: yes
+    
+    - name: Updating Packages
+      yum: >
+        update_cache=yes
+        name=*
+        state=latest
+        update_cache=yes      
+
+    - name: Install Docker-Ce
+      yum: 
+        name: 
+          - docker-ce
+    when: ansible_distribution == 'CentOS'

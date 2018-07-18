@@ -1,0 +1,22 @@
+---
+# Ansible Playbook - Windows apps install
+- hosts: all
+  tasks:
+    - name: Create temp directory
+      win_file:
+        path: C:\temp
+        state: directory
+    - name: copy file to system
+      win_copy:
+        src: /tmp/googlechromestandaloneenterprise64.msi
+        dest: C:\temp\googlechromestandaloneenterprise64.msi
+    - name: Install the Chrome
+      win_package:
+        path: C:\temp\googlechromestandaloneenterprise64.msi
+#        path: https://enterprise.google.com/chrome/chrome-browser/thankyou.html?platform=win64msi -accepteula
+#        product_id: '{7E3E141C-409F-44F5-B55E-45D4374CD6F7}'
+        state: present
+    - name: remove Chrome installer
+      win_file:
+        path: C:\temp
+        state: absent
