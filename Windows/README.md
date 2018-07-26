@@ -1,2 +1,1 @@
-#install-windows-apps
-This playbook will install Chrome on a Windows system
+This playbook will install an .msi package on a Windows system. Example used installs Google Chrome.
